@@ -4,32 +4,30 @@ import csv
 import time
 
 # Serielle Verbindung zum Arduino herstellen
-ser = serial.Serial('COM3', 9600)  # Passe 'COM3' an den richtigen Port deines Arduino an
-time.sleep(2)  # Warte, bis die serielle Verbindung aufgebaut ist
+# Passe 'COM3' an den richtigen Port deines Arduino an
+auslesenCSVInformationenArduino = serial.Serial('COM3', 9600)
+time.sleep(2)  # Warte 2 Sekunden, bis die serielle Verbindung zum Arduino aufgebaut ist
 
-# CSV-Datei öffnen
+# CSV-Datei 'CO2Daten.cvs' im gleichen Ordner zum Beschreiben öffnen
 with open('CO2Daten.csv', 'w', newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
 
-    # Schreibe die Header-Zeile (optional)
-     # csvwriter.writerow(['Sensor1', 'Sensor2'])
-
     try:
         while True:
-            # Zeile von der seriellen Schnittstelle lesen
-            line = ser.readline().decode('utf-8').strip()
+            # CSV-Zeile von der seriellen Schnittstelle des Arduino lesen
+            line = auslesenCSVInformationenArduino.readline().decode('utf-8').strip()
 
             # Daten in eine Liste konvertieren
             data = line.split(';')
 
-            # Daten in die CSV-Datei schreiben
+            # Mit den Daten eine weitere Zeile in die CSV-Datei schreiben
             csvwriter.writerow(data)
-            ser.flush()
+            auslesenCSVInformationenArduino.flush()
 
-            # Ausgabe zur Kontrolle
+            # Ausgabe zur Kontrolle auf der Konsole
             print(data)
 
     except KeyboardInterrupt:
         # Skript mit Strg+C beenden
         print("Beenden")
-        ser.close()
+        auslesenCSVInformationenArduino.close()

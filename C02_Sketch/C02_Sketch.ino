@@ -48,7 +48,7 @@ void loop()
     // Die CO2-Daten werden als mit einem Zeitstempel versehen
     // Eine Zeile (= ein Datum) könnte dann so aussehen:
     // 152334;723
-	// Dies entspricht dem CSV - Dateistandard.
+    // Dies entspricht dem CSV - Dateistandard.
     Serial.print(millis());   
     Serial.print(";");
     Serial.println(co2WertInPPM);             
