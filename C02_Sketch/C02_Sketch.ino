@@ -1,3 +1,5 @@
+//Autor: Daniel Katzberg
+
 //Bibliotheken, NICHT ÄNDERN.
 #include "MHZ19.h"                                        
 #include <SoftwareSerial.h>               
