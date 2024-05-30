@@ -10,28 +10,33 @@ const int gelbeLEDPinNummer = 6;   //Ansteuerung des gelben Lichtes
 const int grueneLEDPinNummer = 7;  //Ansteuerung des grünen Lichtes
 
 // Pin Nummern auf dem Arduino für den CO2-Sensor
-#define RXPINNummer 11  // RX Anschluss des CO2-Sensors
-#define TXPINNummer 10  // TX Anschluss des CO2-Sensors        
+// Hinweis: Diese Pin-Nummern sind zum Schaltplan vertauscht. Das ist gewollt! Bitte wie geplant verkabeln.
+#define RXPINNummer 10  // RX Anschluss des CO2-Sensors (R = Read, Lesen)
+#define TXPINNummer 11  // TX Anschluss des CO2-Sensors (T = Transmit, Übertragen)       
 #define BAUDRATE 9600   // Baudrate des CO2-Sensors. NICHT ÄNDERN!!                                  
 
 //Die Variable co2Sensor steht hier als Stellvertreter für den CO2-Sensor
 MHZ19 co2Sensor; 
 
 //Stellt im Programm die Verbindung zum RX / TX Anschluss des Sensors her.
-SoftwareSerial co2Serial(TXPINNummer, RXPINNummer); 
+SoftwareSerial co2Serial(RXPINNummer, TXPINNummer); 
 
 void setup()
-{
-    // Einrichtung und Start der Datenauswertung. NICHT ÄNDERN!
-    Serial.begin(9600); 
-    co2Serial.begin(BAUDRATE);             
-    co2Sensor.begin(co2Serial);                        
-    co2Sensor.autoCalibration();    
-    
+{   
+    // PIN Modus für TX (Transmit = Übermitteln) and RX (Read = Lesen) des Co2 Sensors
+    pinMode(RXPINNummer, INPUT);
+    pinMode(TXPINNummer, OUTPUT);
+
     // Stellt die PINs für die Ampel als Output ein. Das heißt, es werden Signale zur Ampel geschickt.
     pinMode(roteLEDPinNummer, OUTPUT);
     pinMode(gelbeLEDPinNummer, OUTPUT);
     pinMode(grueneLEDPinNummer, OUTPUT);  
+
+    // Einrichtung und Start der Datenauswertung. NICHT ÄNDERN!
+    Serial.begin(BAUDRATE); 
+    co2Serial.begin(BAUDRATE);             
+    co2Sensor.begin(co2Serial);                        
+    co2Sensor.autoCalibration();    
 
     //Überschrift in der CSV Zeile
     Serial.println("Zeitstempel;CO2-Wert in ppm");                       
